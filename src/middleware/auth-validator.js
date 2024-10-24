@@ -1,5 +1,5 @@
-const createError = require("../utils/create-error")
 const jwt = require('jsonwebtoken')
+const createError = require('../utils/createError')
 
 exports.authValidator = (req, res, next) => {
     try {
@@ -9,13 +9,12 @@ exports.authValidator = (req, res, next) => {
             return createError(401, "token missing")
         
         const token = authHeader.split(" ")[1]
-        console.log(token)
 
         jwt.verify(token,process.env.SECRET,(err,decode) => {
             if(err)
                 return createError(400, "token invalid")
             
-            req.user = decode
+            req.user = decode.user
         })
 
         next()
@@ -23,3 +22,4 @@ exports.authValidator = (req, res, next) => {
         next(err)
     }
 }
+

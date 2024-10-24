@@ -11,7 +11,7 @@ authController.login = async (req, res, next) => {
         const { username, password } = req.body
         const user = await authService.getUserByUsername(username)
         if (!user)
-            return createError(400, "email doesn't exist")
+            return createError(400, "username doesn't exist")
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
@@ -26,9 +26,9 @@ authController.login = async (req, res, next) => {
             }
         }
 
-        const genToken = jwt.sign(payload, process.env.SECRET, { expiresIn: "1d" })
+        const genToken = jwt.sign(payload, process.env.SECRET, { expiresIn: "30 d" })
 
-        res.json({ user: payload, token: genToken, message: 'login success' })
+        res.json({ user: payload.user, token: genToken, message: 'login success' })
     } catch (error) {
         next(error)
     }
@@ -60,7 +60,7 @@ authController.register = async (req, res, next) => {
             }
         })
 
-        res.json({ message: 'register success', user: newUser })
+        res.json({ message: 'register success', errorCode: "0000" })
     } catch (error) {
         next(error)
     }

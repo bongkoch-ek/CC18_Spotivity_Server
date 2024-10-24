@@ -5,7 +5,20 @@ const activityService = {}
 
 activityService.getAllActivity = () => {
     return prisma.activity.findMany({
+        where: { IsActive: true },
         orderBy: { createdAt: 'desc' },
+        include: {
+            User: {
+                select: { username: true, id: true }
+            },
+            activityType: true,
+            join: {
+                select: { userId: true }
+            },
+            bookmark: {
+                select: { userId: true }
+            }
+        }
     })
 }
 

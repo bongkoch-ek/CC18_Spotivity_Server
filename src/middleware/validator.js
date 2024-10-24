@@ -49,25 +49,41 @@ const createActivitySchema = joi.object({
         }),
     description: joi.string().required().messages(
         {
-            "string.empty": "Title is required"
+            "string.empty": "description is required"
         }),
-    imgUrl: joi.string().required().messages(
+    typeId: joi.number().required().messages(
         {
-            "string.empty": "Title is required"
+            "string.empty": "type id is required"
         }),
-    startDate: joi.date().max('now').required().messages(
-        {
-            "string.empty": "start date is required"
-        }),
-    endDate: joi.date().max(joi.ref('startDate')).required().messages(
+    startDate: joi.date().min('now').required().messages(
         {
             "string.empty": "start date is required"
+        }),
+    endDate: joi.date().min(joi.ref('startDate')).required().messages(
+        {
+            "string.empty": "end date is required"
         }),
     amount: joi.number().required().messages(
         {
-            "string.empty": "start date is required"
-        }), 
-        // isUnLimit, quantity, mapName, latitude, longitude, otherType
+            "string.empty": "amount is required"
+        }),
+    isUnLimit: joi.boolean(),
+    mapName: joi.string().messages(
+        {
+            "string.empty": "mapName is required"
+        }),
+    latitude: joi.number().required().messages(
+        {
+            "string.empty": "latitude is required"
+        }),
+    longitude: joi.number().required().messages(
+        {
+            "string.empty": "longitude is required"
+        }),
+    otherType: joi.string().messages(
+        {
+            "string.empty": "mapName is required"
+        }),
 })
 
 
@@ -82,3 +98,4 @@ const validateSchema = (schema) => (req, res, next) => {
 
 exports.registerValidator = validateSchema(registerSchema)
 exports.loginValidator = validateSchema(loginSchema)
+exports.createActivityValidator = validateSchema(createActivitySchema)
