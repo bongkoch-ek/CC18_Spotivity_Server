@@ -36,6 +36,8 @@ model Activity {
   userId       Int          @map("user_id")
   join         Join[]
   bookmark     Bookmark[]
+
+  @@map("activity")
 }
 
 model User {
@@ -50,6 +52,8 @@ model User {
   activities Activity[]
   join       Join[]
   bookmark   Bookmark[]
+
+  @@map("user")
 }
 
 model ActivityType {
@@ -57,6 +61,8 @@ model ActivityType {
   nameTH     String     @map("name_th")
   nameEng    String     @map("name_eng")
   activities Activity[]
+
+  @@map("activity_type")
 }
 
 model Join {
@@ -65,6 +71,8 @@ model Join {
   activityId Int      @map("activity_id")
   User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int      @map("user_id")
+
+  @@map("join")
 }
 
 model Bookmark {
@@ -73,4 +81,6 @@ model Bookmark {
   activityId Int      @map("activity_id")
   User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int      @map("user_id")
+
+  @@map("bookmark")
 }
