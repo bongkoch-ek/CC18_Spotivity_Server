@@ -13,7 +13,11 @@ activityService.getAllActivity = () => {
             },
             activityType: true,
             join: {
-                select: { userId: true }
+                include:{
+                    User:{
+                        select: { username: true, id: true }
+                    }
+                }
             },
             bookmark: {
                 select: { userId: true }
