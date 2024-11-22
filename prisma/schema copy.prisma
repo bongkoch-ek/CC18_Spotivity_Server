@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -24,15 +30,13 @@ model Activity {
   createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamp(0)
   otherType    String?      @map("other_type")
-  typeId       Int          @map("type_id")
-  userId       Int          @map("user_id")
   activityType ActivityType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  typeId       Int          @map("type_id")
   User         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bookmark     Bookmark[]
+  userId       Int          @map("user_id")
   join         Join[]
+  bookmark     Bookmark[]
 
-  @@index([typeId], map: "activity_type_id_fkey")
-  @@index([userId], map: "activity_user_id_fkey")
   @@map("activity")
 }
 
@@ -46,8 +50,8 @@ model User {
   createdAt  DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt  DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
   activities Activity[]
-  bookmark   Bookmark[]
   join       Join[]
+  bookmark   Bookmark[]
 
   @@map("user")
 }
@@ -63,24 +67,20 @@ model ActivityType {
 
 model Join {
   id         Int      @id @default(autoincrement())
-  activityId Int      @map("activity_id")
-  userId     Int      @map("user_id")
   Activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int      @map("activity_id")
   User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int      @map("user_id")
 
-  @@index([activityId], map: "join_activity_id_fkey")
-  @@index([userId], map: "join_user_id_fkey")
   @@map("join")
 }
 
 model Bookmark {
   id         Int      @id @default(autoincrement())
-  activityId Int      @map("activity_id")
-  userId     Int      @map("user_id")
   Activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int      @map("activity_id")
   User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int      @map("user_id")
 
-  @@index([activityId], map: "bookmark_activity_id_fkey")
-  @@index([userId], map: "bookmark_user_id_fkey")
   @@map("bookmark")
 }
